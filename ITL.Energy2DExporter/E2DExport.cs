@@ -7,6 +7,8 @@ namespace ITL.Energy2DExporter
 {
     public class E2DExport
     {
+        public static double ModelHeight_Meters = 100.0;
+        public static double ModelWidth_Meters = 100.0;
         public static double Timestep = 0.1;
         public static double SunAngle = 1.5707964;
         public static double SolarPowerDensity = 2000.0;
@@ -37,6 +39,8 @@ namespace ITL.Energy2DExporter
         $"<links>" + "\n" +
         $"</links>" + "\n" +
         $"<model>" + "\n" +
+        $"<model_width>{ModelWidth_Meters}</model_width>" + "\n" +
+        $"<model_height>{ModelHeight_Meters}</model_height>" + "\n" +
         $"<timestep>{Timestep}</timestep>" + "\n" +
         $"<sun_angle>{SunAngle}</sun_angle>" + "\n" +
         $"<solar_power_density>{SolarPowerDensity}</solar_power_density>" + "\n" +
@@ -89,9 +93,9 @@ namespace ITL.Energy2DExporter
             int count = pl.Count;
             foreach(var p in pl)
             {
-                vertices += $"{p.X}, {p.Y},";
+                vertices += $"{p.X}, {-p.Y},";
             }
-            vertices.TrimEnd(',');
+            vertices = vertices.TrimEnd(',');
 
             string partTemplate =
                 "<part>" + "\n" +
@@ -119,13 +123,13 @@ namespace ITL.Energy2DExporter
             {
                 // Sample the curve.
                 Point3d p = part.PointAtNormalizedLength((1.0 / NurbsCurveSampling) * i);
-                vertices += $"{p.X}, {p.Y},";
+                vertices += $"{p.X}, {-p.Y},";
             }
-            vertices.TrimEnd(',');
+            vertices = vertices.TrimEnd(',');
 
             string partTemplate =
             "<part>" + "\n" +
-            $"<blob count=\"{NurbsCurveSampling}\" vertices=\"{vertices}\"/>" + "\n" +
+            $"<blob count=\"{NurbsCurveSampling + 1}\" vertices=\"{vertices}\"/>" + "\n" +
             "<elasticity>1.0</elasticity>" + "\n" +
             "<thermal_conductivity>1.0</thermal_conductivity>" + "\n" +
             "<specific_heat>1300.0</specific_heat>" + "\n" +
@@ -148,7 +152,7 @@ namespace ITL.Energy2DExporter
         /// The amount of sample points to take from
         /// a nurbs curve to convert it.
         /// </summary>
-        public static int NurbsCurveSampling = 50;
+        public static int NurbsCurveSampling = 25;
 
         public void WriteFile(string path)
         {

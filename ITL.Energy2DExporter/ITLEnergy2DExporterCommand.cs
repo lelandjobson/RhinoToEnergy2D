@@ -27,7 +27,7 @@ namespace ITL.Energy2DExporter
         ///<returns>The command name as it appears on the Rhino command line.</returns>
         public override string EnglishName
         {
-            get { return "ITLEnergy2DExporterCommand"; }
+            get { return "DFG_Export2E2D"; }
         }
 
         private bool ValidateDocParams()
@@ -65,12 +65,18 @@ namespace ITL.Energy2DExporter
                 foreach (var o in selectedObjects)
                 {
                     var c = o.Curve();
+                    // Don't add open curves
+                    if (!c.IsClosed) { continue; }
                     if (c != null) { hasAtLeastOneObject = true; export.AddPart(c); }
                 }
                 if (!hasAtLeastOneObject) { goto cancelCmd; }
 
                 // Write out the export
                 export.WriteFile(null);
+
+                // Let the users know we care
+                ShowRandomMsg();
+                return Result.Success;
 
                 cancelCmd:
                 RhinoApp.WriteLine("Command cancelled.");
@@ -82,6 +88,39 @@ namespace ITL.Energy2DExporter
                 return Result.Failure;
             }
          
+        }
+
+        void ShowRandomMsg()
+        {
+            var rand = new Random();
+            int intrnad = rand.Next(10);
+            switch (intrnad)
+            {
+                case 1:
+                    RhinoApp.WriteLine("The ITL wishes you a mediocre day");
+                    break;
+                case 2:
+                    RhinoApp.WriteLine("The ITL wishes you an average day");
+                    break;
+                case 3:
+                    RhinoApp.WriteLine("The ITL wishes you a special day");
+                    break;
+                case 4:
+                    RhinoApp.WriteLine("The ITL wishes you a spectacular day");
+                    break;
+                case 5:
+                    RhinoApp.WriteLine("The ITL wishes you a wonderful day");
+                    break;
+                case 6:
+                    RhinoApp.WriteLine("The ITL wishes you a blessed day");
+                    break;
+                case 7:
+                case 8:
+                case 9:
+                case 10:
+                    RhinoApp.WriteLine("The ITL wishes you a good day");
+                    break;
+            }
         }
     }
 }
