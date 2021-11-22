@@ -9,7 +9,7 @@ A 1 step commmand to convert your curve section in Rhinoceros 6.x + into a E2D f
 
 Instructions
 
-- Instructions deck here! https://docs.google.com/presentation/d/1mAq0MSd-OrRLqBsI5Y9oHY-39lL3d0qk3SnN__xIkqI/edit?usp=sharing
+- Instructions deck here! https://docs.google.com/presentation/d/1-yaAd_epIOuv25s4__a3vKqBfFNN6W90AFoUGFFbodo/edit?usp=sharing
 
 Installation
 
